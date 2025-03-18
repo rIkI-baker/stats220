@@ -2,10 +2,12 @@
 
 This is my repo for STATS 220. 
 
-A little about me:
+#### A little about me:
 
-- I am undertaking a degree in bachelor science.
-- I am taking STATS 220 because it is unavoidable.
-- I am interested in learning about R!
+1. I am undertaking a degree in _**bachelor science**_.
+2. I am taking STATS 220 because it is _**unavoidable**_.
+3. I am interested in learning about _**R!**_
 
-A meme that captures how I currently feel about my university studies is ![](https://media1.tenor.com/m/BmhYOCo1q6YAAAAd/bananna-man.gif)
+- [Useful website](https://www.markdownguide.org/basic-syntax/)
+
+- A meme that captures how I currently feel about my university studies is ![](https://media1.tenor.com/m/BmhYOCo1q6YAAAAd/bananna-man.gif)
