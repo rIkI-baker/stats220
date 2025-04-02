@@ -1,0 +1,117 @@
+---
+title: My dynamic report
+output: html_fragment
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+library(tidyverse)
+```
+
+```{css}
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 2;
+  color: #222;
+  background-color: #dee0fd;
+}
+
+h1, h2, h3 {
+  font-weight: bold;
+  color: #a10fdc;
+  padding: 10px;
+}
+
+p {
+  line-height: 1.8;
+  color: #444;
+  margin-bottom: 1em;
+}
+```
+
+## Vehicle Observations Over Time
+
+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
+This dynamic report analyses the vehicle observations I gathered for ***STATS 220*** using a Google Form, noting information such as the **vehicle type** (e.g., sedan, SUV), **colour**, **passenger count**, and **time of day** (day or night). The aim was to identify the most popular vehicle type and average occupants in/on the vehicle, and display them using bar charts that display the distribution of vehicle types by time and frequency of passenger counts.
+
+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
+```{r}
+logged_data <- read.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTZqfcRjxeyckaP1w6NkhltSoZPP_SOVkl9CIHnjvoMbGM5-GiRL5jLPcZWCJVHMIq2Y-TSDkQaIAAh/pub?output=csv")
+latest_data <- logged_data %>%
+  rename(
+    time_of_day = 2,
+    vehicle_type = 3,
+    vehicle_colour = 4,
+    passengers = 5
+    )
+```
+
+```{r}
+mean_passengers <- mean(latest_data$passengers, na.rm = TRUE) %>%
+  round()
+
+min_passengers <- min(latest_data$passengers, na.rm = TRUE)
+
+max_passengers <- max(latest_data$passengers, na.rm = TRUE)
+
+num_vehicles <- length(latest_data$vehicle_type)
+
+popular_vehicle_type <- latest_data %>%
+  group_by(vehicle_type) %>%
+  summarise(count = n()) %>%    
+  arrange(desc(count)) %>%      
+  slice(1) %>%                  
+  pull(vehicle_type)
+```
+
+In my STATS 220 observation logs, there are **`r num_vehicles`** vehicles that are observed!
+
+![](https://i.giphy.com/3oxRmD9a5pLTOOLigM.webp)
+
+The most frequently observed vehicle type is a **`r popular_vehicle_type`**.
+
+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
+The average amount of passengers in/on a vehicle is **`r mean_passengers`**.
+
+![](https://i.giphy.com/2xDEmhOiRZyO0OZCZi.webp)
+
+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
+### The chart showing vehicle types
+
+```{r}
+bar_chart_1 <- ggplot(data = latest_data) +
+  geom_bar(aes(x = vehicle_type, fill = time_of_day)) +
+  labs(title = "Which type of vehicle appears more?",
+       subtitle = "Comparing vehicle_type and time_of_day for vehicles on the STATS 220 logging form",
+       x = "Type of vehicle",
+       y = "Number of vehicles"
+       )
+
+bar_chart_1
+
+```
+
+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
+### Second chart
+
+```{r}
+bar_chart_2 <- latest_data %>%
+  ggplot(aes(x= passengers)) +
+  geom_bar(fill = "skyblue") +
+  labs(title = "Distribution of passenger counts",
+       subtitle = "How many passengers are typically in vehicles?",
+       x = "Number of passengers",
+       y = "Number of vehicles"
+       )
+
+bar_chart_2
+
+```
+
+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
